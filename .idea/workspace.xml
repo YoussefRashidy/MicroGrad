@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="bb38e151-d05d-4af9-be64-87bec514fb00" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CopilotChats">
+    <option name="panelChat">
+      <chat>
+        <option name="activeSessionId" value="81529715-211e-43ea-814b-fc131d5d1ce7" />
+        <option name="sessions">
+          <session>
+            <option name="chatType" value="PANEL" />
+            <option name="id" value="81529715-211e-43ea-814b-fc131d5d1ce7" />
+            <option name="modeId" value="Agent" />
+            <option name="modelType" value="builtin_family" />
+            <option name="modelValue" value="auto" />
+            <option name="targetType" value="LOCAL" />
+          </session>
+        </option>
+        <option name="type" value="PANEL" />
+      </chat>
+    </option>
+  </component>
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_C:/Users/Rotana Store/IdeaProjects/MicrogradKt" value="3ImwphYUOZeD7Mjj0i3P9JqheB3" />
+    </persistenceIdMap>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Kotlin Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0" />
+      <entry key="S2" value="1.0" />
+      <entry key="S5" value="1.0" />
+      <entry key="S10" value="1.0000000039435355" />
+      <entry key="S30" value="1.0046954794189153" />
+      <entry key="S60" value="1.3434677415749545" />
+      <entry key="M2" value="5.214758106722933" />
+      <entry key="M5" value="28.500803241720096" />
+      <entry key="M10" value="63.82056635183231" />
+      <entry key="M15" value="90.29339738869936" />
+      <entry key="M30" value="140.78613139710075" />
+      <entry key="H1" value="187.05450810386662" />
+      <entry key="H2" value="220.34060200284907" />
+      <entry key="H4" value="240.64507200350815" />
+      <entry key="D1" value="259.8725743153627" />
+      <entry key="W1" value="263.4042839749271" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="2.4328741232642667E-163" />
+      <entry key="S2" value="2.554006632481077E-41" />
+      <entry key="S5" value="1.1134208158852003E-16" />
+      <entry key="S10" value="2.746247730497465E-8" />
+      <entry key="S30" value="0.014022600405203662" />
+      <entry key="S60" value="0.4361184902199257" />
+      <entry key="M2" value="2.960153446469487" />
+      <entry key="M5" value="12.39817181212943" />
+      <entry key="M10" value="24.16212268153961" />
+      <entry key="M15" value="32.59556412623379" />
+      <entry key="M30" value="48.365884886545324" />
+      <entry key="H1" value="62.6040187967569" />
+      <entry key="H2" value="72.76100156887163" />
+      <entry key="H4" value="78.92857253125362" />
+      <entry key="D1" value="84.75194165680436" />
+      <entry key="W1" value="85.8199083259403" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="0.16493848884661177" />
+      <entry key="MS500" value="0.6973718331752027" />
+      <entry key="S2" value="0.9138314502294005" />
+      <entry key="S5" value="0.9645981845841383" />
+      <entry key="S10" value="0.9821396241488163" />
+      <entry key="S30" value="1.0122630714615672" />
+      <entry key="S60" value="1.767964612746524" />
+      <entry key="M2" value="8.1362835876555" />
+      <entry key="M5" value="40.81904616625524" />
+      <entry key="M10" value="87.89733864449107" />
+      <entry key="M15" value="122.80939750348975" />
+      <entry key="M30" value="189.0898859966432" />
+      <entry key="H1" value="249.61675435980487" />
+      <entry key="H2" value="293.07675011018404" />
+      <entry key="H4" value="319.55998803030286" />
+      <entry key="D1" value="344.62204377881073" />
+      <entry key="W1" value="349.22383395620625" />
+    </decayedShown>
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 5,
+  "fromUser": false
+}]]></component>
+  <component name="ProjectId" id="3ImwphYUOZeD7Mjj0i3P9JqheB3" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "onboarding.tips.debug.path": "C:/Users/Rotana Store/IdeaProjects/MicrogradKt/src/main/kotlin/Main.kt",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-37e91769500f-intellij.indexing.shared.core-IU-261.24374.151" />
+        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-IU-261.24374.151" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="bb38e151-d05d-4af9-be64-87bec514fb00" name="Changes" comment="" />
+      <created>1788383236411</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1788383236411</updated>
+      <workItem from="1788383237562" duration="4964000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/src/main/kotlin/Main.kt</url>
+          <line>13</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
+  </component>
+</project>
