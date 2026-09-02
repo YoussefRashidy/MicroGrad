@@ -1,9 +1,11 @@
 package io.github.youssefrashidy
 
-open class Tensor(val backedArray: DoubleArray , val shape : IntArray , val requiresGrad: Boolean = true ,val strides : IntArray = computeStrides() ) {
+import kotlin.math.max
+
+open class Tensor(val backedArray: DoubleArray , val shape : IntArray , val requiresGrad: Boolean = true ,val strides : IntArray = computeStrides(shape) ) {
     val rank : Int get() = shape.size
     val size : Int get() = backedArray.size
-    var grad: Double = 0
+    var grad: Double = 0.0
     var grad_fn : BackwardFunction? = null
     val prevTensors : Array<Tensor> = emptyArray()
 
@@ -12,15 +14,15 @@ open class Tensor(val backedArray: DoubleArray , val shape : IntArray , val requ
             "Expected $rank indices, but got ${indices.size}"
         }
 
-        val index = getFlatIndex(indices)
+        val index = getFlatIndex(*indices)
         return backedArray[index]
     }
 
-    operator fun set(value: Double, vararg indices: Int ) {
-        require(indices.size == rank){
+    operator fun set(vararg indices: Int, value: Double) {
+        require(indices.size == rank) {
             "Expected $rank indices, but got ${indices.size}"
         }
-        val index = getFlatIndex(indices)
+        val index = getFlatIndex(*indices)
         backedArray[index] = value
     }
 
@@ -38,8 +40,8 @@ open class Tensor(val backedArray: DoubleArray , val shape : IntArray , val requ
     fun broadcast(a : Tensor , b : Tensor ): Triple<Tensor , Tensor , IntArray> {
         val targetRank = max(a.rank, b.rank)
         val targetShape = IntArray(targetRank)
-        aPadding = targetRank - a.rank
-        bPadding = targetRank - b.rank
+        val aPadding = targetRank - a.rank
+        val bPadding = targetRank - b.rank
         for(i in targetRank -1 downTo 0){
             val aDim = if(i < aPadding) 1 else a.shape[aPadding - i]
             val bDim = if(i < bPadding) 1 else b.shape[bPadding - i]
@@ -56,9 +58,10 @@ open class Tensor(val backedArray: DoubleArray , val shape : IntArray , val requ
                 )
             }
         }
+        return Triple(a.broadcastTo(targetShape),b.broadcastTo(targetShape), targetShape)
     }
 
-    fun broadcastTo(targetShape: IntArray) {
+    fun broadcastTo(targetShape: IntArray): Tensor {
         if(this.shape.contentEquals(targetShape))
             return this
         require(targetShape.size >= rank) {
@@ -80,7 +83,7 @@ open class Tensor(val backedArray: DoubleArray , val shape : IntArray , val requ
     }
 
     companion object {
-        private fun computeStrides() {
+         fun computeStrides(shape : IntArray) : IntArray {
             val strides = IntArray(shape.size)
             var currentStride = 1
             for (i in shape.size - 1 downTo 0) {

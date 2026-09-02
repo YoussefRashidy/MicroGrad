@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bb38e151-d05d-4af9-be64-87bec514fb00" name="Changes" comment="" />
+    <list default="true" id="bb38e151-d05d-4af9-be64-87bec514fb00" name="Changes" comment="Added basic tensor broadcasting">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Tensor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Tensor.kt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -49,91 +53,91 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="1.4689112858010053E-98" />
+      <entry key="S5" value="1.2316222303146024E-39" />
+      <entry key="S10" value="6.121634189094909E-20" />
+      <entry key="S30" value="1.1711248067356279E-6" />
+      <entry key="S60" value="0.003386338195362321" />
+      <entry key="M2" value="0.23820130663621245" />
+      <entry key="M5" value="6.120771397336459" />
+      <entry key="M10" value="28.472953571990306" />
+      <entry key="M15" value="53.05184615687854" />
+      <entry key="M30" value="110.3700499029124" />
+      <entry key="H1" value="170.2262417490213" />
+      <entry key="H2" value="216.35235557201764" />
+      <entry key="H4" value="245.54132680760216" />
+      <entry key="D1" value="273.8447724182059" />
+      <entry key="W1" value="279.1099195180581" />
+    </decayedCancelled>
+    <decayedSelected>
       <entry key="MS100" value="1.0" />
       <entry key="MS500" value="1.0" />
       <entry key="S2" value="1.0" />
       <entry key="S5" value="1.0" />
-      <entry key="S10" value="1.0000000039435355" />
-      <entry key="S30" value="1.0046954794189153" />
-      <entry key="S60" value="1.3434677415749545" />
-      <entry key="M2" value="5.214758106722933" />
-      <entry key="M5" value="28.500803241720096" />
-      <entry key="M10" value="63.82056635183231" />
-      <entry key="M15" value="90.29339738869936" />
-      <entry key="M30" value="140.78613139710075" />
-      <entry key="H1" value="187.05450810386662" />
-      <entry key="H2" value="220.34060200284907" />
-      <entry key="H4" value="240.64507200350815" />
-      <entry key="D1" value="259.8725743153627" />
-      <entry key="W1" value="263.4042839749271" />
-    </decayedCancelled>
-    <decayedSelected>
-      <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="2.4328741232642667E-163" />
-      <entry key="S2" value="2.554006632481077E-41" />
-      <entry key="S5" value="1.1134208158852003E-16" />
-      <entry key="S10" value="2.746247730497465E-8" />
-      <entry key="S30" value="0.014022600405203662" />
-      <entry key="S60" value="0.4361184902199257" />
-      <entry key="M2" value="2.960153446469487" />
-      <entry key="M5" value="12.39817181212943" />
-      <entry key="M10" value="24.16212268153961" />
-      <entry key="M15" value="32.59556412623379" />
-      <entry key="M30" value="48.365884886545324" />
-      <entry key="H1" value="62.6040187967569" />
-      <entry key="H2" value="72.76100156887163" />
-      <entry key="H4" value="78.92857253125362" />
-      <entry key="D1" value="84.75194165680436" />
-      <entry key="W1" value="85.8199083259403" />
+      <entry key="S10" value="1.0" />
+      <entry key="S30" value="1.0000014629398706" />
+      <entry key="S60" value="1.0031333754832323" />
+      <entry key="M2" value="1.1605675399991096" />
+      <entry key="M5" value="3.9368432982806256" />
+      <entry key="M10" value="12.484621066463665" />
+      <entry key="M15" value="21.11024215104418" />
+      <entry key="M30" value="40.222273773818905" />
+      <entry key="H1" value="59.49874255364995" />
+      <entry key="H2" value="74.09609386253234" />
+      <entry key="H4" value="83.25311938858957" />
+      <entry key="D1" value="92.08482740706117" />
+      <entry key="W1" value="93.72316933400924" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.16493848884661177" />
-      <entry key="MS500" value="0.6973718331752027" />
-      <entry key="S2" value="0.9138314502294005" />
-      <entry key="S5" value="0.9645981845841383" />
-      <entry key="S10" value="0.9821396241488163" />
-      <entry key="S30" value="1.0122630714615672" />
-      <entry key="S60" value="1.767964612746524" />
-      <entry key="M2" value="8.1362835876555" />
-      <entry key="M5" value="40.81904616625524" />
-      <entry key="M10" value="87.89733864449107" />
-      <entry key="M15" value="122.80939750348975" />
-      <entry key="M30" value="189.0898859966432" />
-      <entry key="H1" value="249.61675435980487" />
-      <entry key="H2" value="293.07675011018404" />
-      <entry key="H4" value="319.55998803030286" />
-      <entry key="D1" value="344.62204377881073" />
-      <entry key="W1" value="349.22383395620625" />
+      <entry key="MS100" value="5.343230963187204E-4" />
+      <entry key="MS500" value="0.2215954247987168" />
+      <entry key="S2" value="0.6861043887562615" />
+      <entry key="S5" value="0.8601141232770266" />
+      <entry key="S10" value="0.9274233786556314" />
+      <entry key="S30" value="0.9752002919596712" />
+      <entry key="S60" value="0.9939550493653712" />
+      <entry key="M2" value="1.3899450847626407" />
+      <entry key="M5" value="10.034508191304992" />
+      <entry key="M10" value="40.91418568913209" />
+      <entry key="M15" value="74.11093162718379" />
+      <entry key="M30" value="150.5409069588053" />
+      <entry key="H1" value="229.6854980210107" />
+      <entry key="H2" value="290.42328600602633" />
+      <entry key="H4" value="328.78012696697067" />
+      <entry key="D1" value="365.9269299864178" />
+      <entry key="W1" value="372.8326998814645" />
     </decayedShown>
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 5,
-  "fromUser": false
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5,
+  &quot;fromUser&quot;: false
+}</component>
   <component name="ProjectId" id="3ImwphYUOZeD7Mjj0i3P9JqheB3" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "onboarding.tips.debug.path": "C:/Users/Rotana Store/IdeaProjects/MicrogradKt/src/main/kotlin/Main.kt",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/Rotana Store/IdeaProjects/MicrogradKt/src/main/kotlin/Main.kt&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -149,12 +153,26 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1788383236411</updated>
-      <workItem from="1788383237562" duration="4964000" />
+      <workItem from="1788383237562" duration="5274000" />
+      <workItem from="1788389027379" duration="1201000" />
     </task>
+    <task id="LOCAL-00001" summary="Added basic tensor broadcasting">
+      <option name="closed" value="true" />
+      <created>1788388606031</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1788388606031</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added basic tensor broadcasting" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added basic tensor broadcasting" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
