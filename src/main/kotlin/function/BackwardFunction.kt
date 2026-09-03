@@ -1,4 +1,4 @@
-package io.github.youssefrashidy
+package io.github.youssefrashidy.function
 
 interface BackwardFunction {
     fun apply()

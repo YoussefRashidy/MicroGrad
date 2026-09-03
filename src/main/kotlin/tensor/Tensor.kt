@@ -1,13 +1,14 @@
-package io.github.youssefrashidy
+package io.github.youssefrashidy.tensor
 
+import io.github.youssefrashidy.function.BackwardFunction
 import kotlin.math.max
 
 open class Tensor(val backedArray: DoubleArray , val shape : IntArray , val requiresGrad: Boolean = true ,val strides : IntArray = computeStrides(shape) ) {
     val rank : Int get() = shape.size
     val size : Int get() = backedArray.size
-    var grad: Double = 0.0
+    var grad: Tensor? = null
     var grad_fn : BackwardFunction? = null
-    val prevTensors : Array<Tensor> = emptyArray()
+    var prevTensors : Array<Tensor> = emptyArray()
 
     operator fun get(vararg indices: Int): Double {
         require(indices.size == rank){
@@ -18,6 +19,7 @@ open class Tensor(val backedArray: DoubleArray , val shape : IntArray , val requ
         return backedArray[index]
     }
 
+
     operator fun set(vararg indices: Int, value: Double) {
         require(indices.size == rank) {
             "Expected $rank indices, but got ${indices.size}"
@@ -25,6 +27,8 @@ open class Tensor(val backedArray: DoubleArray , val shape : IntArray , val requ
         val index = getFlatIndex(*indices)
         backedArray[index] = value
     }
+
+
 
     fun getFlatIndex(vararg indices: Int): Int {
         var index = 0 ;
@@ -37,28 +41,40 @@ open class Tensor(val backedArray: DoubleArray , val shape : IntArray , val requ
         return index
     }
 
-    fun broadcast(a : Tensor , b : Tensor ): Triple<Tensor , Tensor , IntArray> {
-        val targetRank = max(a.rank, b.rank)
-        val targetShape = IntArray(targetRank)
-        val aPadding = targetRank - a.rank
-        val bPadding = targetRank - b.rank
-        for(i in targetRank -1 downTo 0){
-            val aDim = if(i < aPadding) 1 else a.shape[aPadding - i]
-            val bDim = if(i < bPadding) 1 else b.shape[bPadding - i]
-            if(aDim == bDim)
-                targetShape[i] = aDim
-            else if (aDim == 1)
-                targetShape[i] = bDim
-            else if(bDim == 1)
-                targetShape[i] = aDim
-            else {
-                throw IllegalArgumentException(
-                    "Operands could not be broadcast together with shapes " +
-                            "${a.shape.contentToString()} and ${b.shape.contentToString()}"
-                )
+    companion object {
+        fun computeStrides(shape : IntArray) : IntArray {
+            val strides = IntArray(shape.size)
+            var currentStride = 1
+            for (i in shape.size - 1 downTo 0) {
+                strides[i] = currentStride
+                currentStride *= shape[i]
             }
+            return strides
         }
-        return Triple(a.broadcastTo(targetShape),b.broadcastTo(targetShape), targetShape)
+
+        fun broadcast(a: Tensor, b: Tensor): Triple<Tensor, Tensor, IntArray> {
+            val targetRank = max(a.rank, b.rank)
+            val targetShape = IntArray(targetRank)
+            val aPadding = targetRank - a.rank
+            val bPadding = targetRank - b.rank
+            for (i in targetRank - 1 downTo 0) {
+                val aDim = if (i < aPadding) 1 else a.shape[i-aPadding]
+                val bDim = if (i < bPadding) 1 else b.shape[i-bPadding]
+                if (aDim == bDim)
+                    targetShape[i] = aDim
+                else if (aDim == 1)
+                    targetShape[i] = bDim
+                else if (bDim == 1)
+                    targetShape[i] = aDim
+                else {
+                    throw IllegalArgumentException(
+                        "Operands could not be broadcast together with shapes " +
+                                "${a.shape.contentToString()} and ${b.shape.contentToString()}"
+                    )
+                }
+            }
+            return Triple(a.broadcastTo(targetShape), b.broadcastTo(targetShape), targetShape)
+        }
     }
 
     fun broadcastTo(targetShape: IntArray): Tensor {
@@ -72,25 +88,13 @@ open class Tensor(val backedArray: DoubleArray , val shape : IntArray , val requ
         for (i in targetShape.size - 1 downTo 0) {
             val dim = if(i < rankDiff) 1 else this.shape[i - rankDiff]
             val stride = if(i < rankDiff) 0 else this.strides[i - rankDiff]
-            if(dim == targetShape[i])
-                viewStrides[i] = stride
-            else if (dim == 1)
-                viewStrides[i] = 0
-            else
-                throw IllegalArgumentException("Cannot broadcast dimension $dim to ${targetShape[i]} at axis $i\"")
+            when (dim) {
+                targetShape[i] -> viewStrides[i] = stride
+                1 -> viewStrides[i] = 0
+                else -> throw IllegalArgumentException("Cannot broadcast dimension $dim to ${targetShape[i]} at axis $i")
+            }
         }
         return Tensor(this.backedArray,targetShape,this.requiresGrad,viewStrides)
     }
 
-    companion object {
-         fun computeStrides(shape : IntArray) : IntArray {
-            val strides = IntArray(shape.size)
-            var currentStride = 1
-            for (i in shape.size - 1 downTo 0) {
-                strides[i] = currentStride
-                currentStride *= shape[i]
-            }
-            return strides
-        }
-    }
 }
