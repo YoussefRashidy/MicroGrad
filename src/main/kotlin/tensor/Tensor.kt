@@ -7,7 +7,7 @@ open class Tensor(val backedArray: DoubleArray , val shape : IntArray , val requ
     val rank : Int get() = shape.size
     val size : Int get() = backedArray.size
     var grad: Tensor? = null
-    var grad_fn : BackwardFunction? = null
+    var gradFn : BackwardFunction? = null
     var prevTensors : Array<Tensor> = emptyArray()
 
     operator fun get(vararg indices: Int): Double {
