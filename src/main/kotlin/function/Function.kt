@@ -3,7 +3,7 @@ package io.github.youssefrashidy.function
 import io.github.youssefrashidy.tensor.Tensor
 
 abstract class Function {
-    abstract fun forward(vararg tensors: Tensor) : Tensor
+    abstract fun forward(input: FunctionInput) : Tensor
     abstract fun backward(vararg tensors: Tensor) : Unit
 
     protected fun accumulateAddition(targetGradView: Tensor, outputGrad: Tensor) {

@@ -2,10 +2,15 @@ package io.github.youssefrashidy.function.operators
 
 import io.github.youssefrashidy.function.BackwardFunction
 import io.github.youssefrashidy.function.Function
+import io.github.youssefrashidy.function.FunctionInput
 import io.github.youssefrashidy.tensor.Tensor
 
 class Addition: Function() {
-    override fun forward(vararg tensors: Tensor): Tensor {
+    override fun forward(input: FunctionInput): Tensor {
+        require(input is FunctionInput.Tensors){
+
+        }
+        val tensors = input.tensors
         require(tensors.size == 2){
             "Binary addition requires two parameters of two tensor but got ${tensors.size}"
         }

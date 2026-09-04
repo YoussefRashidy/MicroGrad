@@ -2,18 +2,21 @@ package io.github.youssefrashidy.function.operators.unaryoperators
 
 import io.github.youssefrashidy.function.BackwardFunction
 import io.github.youssefrashidy.function.Function
+import io.github.youssefrashidy.function.FunctionInput
 import io.github.youssefrashidy.tensor.Tensor
 
 class Transpose : Function() {
-    override fun forward(vararg tensors: Tensor): Tensor {
+    override fun forward(input: FunctionInput): Tensor {
+        require(input is FunctionInput.Tensors){
+            "Expected FunctionInput.Tensors, but got ${input::class.simpleName}"
+        }
+
+        val tensors = input.tensors
+
         require(tensors.size == 1){
             "Transpose operation can be applied to a single Tensor."
         }
         val tensor = tensors[0]
-        require(tensor.rank <= 2){
-            "Transpose operation can't be applied to higher order tensors"
-        }
-
         val outputTensor = transpose2D(tensor)
         outputTensor.prevTensors = arrayOf(tensor)
         backward(tensor, outputTensor)

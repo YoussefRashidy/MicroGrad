@@ -2,10 +2,15 @@ package io.github.youssefrashidy.function.operators
 
 import io.github.youssefrashidy.function.BackwardFunction
 import io.github.youssefrashidy.function.Function
+import io.github.youssefrashidy.function.FunctionInput
 import io.github.youssefrashidy.tensor.Tensor
 
 class Division: Function() {
-    override fun forward(vararg tensors: Tensor): Tensor {
+    override fun forward(input: FunctionInput): Tensor {
+        require(input is FunctionInput.ReshapeInput){
+
+        }
+        val tensors = input.tensors
         require(tensors.size == 2){
             "Binary Division requires two parameters of two tensor but got ${tensors.size}"
         }
