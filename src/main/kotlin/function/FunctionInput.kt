@@ -9,5 +9,6 @@ sealed interface FunctionInput {
     data class PowerInput(val tensor: Tensor , val power : Double): FunctionInput{}
     data class SumInput(val tensor: Tensor , val axes : IntArray , val keepDims : Boolean): FunctionInput{}
     data class MeanInput(val tensor: Tensor , val axes : IntArray , val keepDims : Boolean): FunctionInput{}
-
+    data class MaxInput(val tensor: Tensor , val axes : IntArray , val keepDims : Boolean): FunctionInput{}
+    data class MinInput(val tensor: Tensor , val axes : IntArray , val keepDims : Boolean): FunctionInput{}
 }

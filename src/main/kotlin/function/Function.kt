@@ -196,6 +196,12 @@ abstract class Function {
         }
         recursiveAccumulate(0)
     }
+
+    protected fun accumulateAtIndices(inputGrad : Tensor , outputGrad : Tensor , indices : IntArray){
+        for (i in indices.indices){
+            inputGrad.backedArray[indices[i]] += outputGrad.backedArray[i]
+        }
+    }
 }
 
 
