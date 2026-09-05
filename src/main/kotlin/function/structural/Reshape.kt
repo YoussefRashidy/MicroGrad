@@ -4,7 +4,7 @@ import io.github.youssefrashidy.function.Function
 import io.github.youssefrashidy.function.FunctionInput
 import io.github.youssefrashidy.tensor.Tensor
 
-class Reshape: Function() {
+object Reshape: Function() {
     override fun forward(input: FunctionInput): Tensor {
         require(input is FunctionInput.ReshapeInput){
             "Expected FunctionInput.ReshapeInput, but got ${input::class.simpleName}"
@@ -32,8 +32,8 @@ class Reshape: Function() {
         }
     }
 
-    private fun reshape(tensor: Tensor , shape : IntArray): Tensor {
-        require(shape.reduce { acc, i ->  acc*i} == tensor.size){
+    internal fun reshape(tensor: Tensor , shape : IntArray): Tensor {
+        require(shape.fold(1){ acc, i ->  acc*i} == tensor.size){
             ""
         }
         return Tensor(tensor.backedArray,shape,tensor.requiresGrad)

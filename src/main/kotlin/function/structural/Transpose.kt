@@ -1,4 +1,4 @@
-package io.github.youssefrashidy.function.operators.unaryoperators
+package function.structural
 
 import io.github.youssefrashidy.function.BackwardFunction
 import io.github.youssefrashidy.function.Function

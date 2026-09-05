@@ -175,6 +175,27 @@ abstract class Function {
 
         recursiveAccumulate(0)
     }
+    protected fun accumulateAdditionDivided(targetGradView: Tensor, outputGrad: Tensor, divisor: Int){
+        val targetShape = outputGrad.shape
+        val indices = IntArray(targetShape.size)
+
+        fun recursiveAccumulate(currentDim: Int) {
+            if (currentDim == targetShape.size - 1) {
+                for (i in 0 until targetShape[currentDim]) {
+                    indices[currentDim] = i
+                    val currentVal = targetGradView.get(*indices)
+                    val gradVal = outputGrad.get(*indices)
+                    targetGradView.set(*indices, value = currentVal + gradVal / divisor)
+                }
+            } else {
+                for (i in 0 until targetShape[currentDim]) {
+                    indices[currentDim] = i
+                    recursiveAccumulate(currentDim + 1)
+                }
+            }
+        }
+        recursiveAccumulate(0)
+    }
 }
 
 
