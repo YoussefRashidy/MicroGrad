@@ -53,27 +53,32 @@ open class Tensor(val backedArray: DoubleArray , val shape : IntArray , val requ
         }
 
         fun broadcast(a: Tensor, b: Tensor): Triple<Tensor, Tensor, IntArray> {
-            val targetRank = max(a.rank, b.rank)
+            val targetShape = broadcastShape(a.shape,b.shape)
+            return Triple(a.broadcastTo(targetShape), b.broadcastTo(targetShape), targetShape)
+        }
+        fun broadcastShape(aShape: IntArray, bShape: IntArray): IntArray {
+            val targetRank = max(aShape.size, bShape.size)
             val targetShape = IntArray(targetRank)
-            val aPadding = targetRank - a.rank
-            val bPadding = targetRank - b.rank
+
+            val aPadding = targetRank - aShape.size
+            val bPadding = targetRank - bShape.size
+
             for (i in targetRank - 1 downTo 0) {
-                val aDim = if (i < aPadding) 1 else a.shape[i-aPadding]
-                val bDim = if (i < bPadding) 1 else b.shape[i-bPadding]
-                if (aDim == bDim)
-                    targetShape[i] = aDim
-                else if (aDim == 1)
-                    targetShape[i] = bDim
-                else if (bDim == 1)
-                    targetShape[i] = aDim
-                else {
-                    throw IllegalArgumentException(
+                val aDim = if (i < aPadding) 1 else aShape[i - aPadding]
+                val bDim = if (i < bPadding) 1 else bShape[i - bPadding]
+
+                targetShape[i] = when {
+                    aDim == bDim -> aDim
+                    aDim == 1 -> bDim
+                    bDim == 1 -> aDim
+                    else -> throw IllegalArgumentException(
                         "Operands could not be broadcast together with shapes " +
-                                "${a.shape.contentToString()} and ${b.shape.contentToString()}"
+                                "${aShape.contentToString()} and ${bShape.contentToString()}"
                     )
                 }
             }
-            return Triple(a.broadcastTo(targetShape), b.broadcastTo(targetShape), targetShape)
+
+            return targetShape
         }
     }
 

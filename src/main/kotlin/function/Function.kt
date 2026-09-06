@@ -202,6 +202,26 @@ abstract class Function {
             inputGrad.backedArray[indices[i]] += outputGrad.backedArray[i]
         }
     }
+
+    protected fun accumulateDot(targetGradView: Tensor ,otherTensor: Tensor ,outputGrad: Tensor){
+        val targetShape = outputGrad.shape
+        val indices = IntArray(targetShape.size)
+
+        fun recursiveAccumulate(currentDim: Int) {
+            if (currentDim == targetShape.size - 1) {
+                for(i in 0 until targetShape[currentDim]) {
+                    indices[i] = i
+                    targetGradView.set(*indices, value = targetGradView.get(*indices)+ otherTensor.get(*indices) * outputGrad[0])
+                }
+            }
+            else
+                for(i in 0 until targetShape[currentDim]) {
+                    indices[i] = i
+                    recursiveAccumulate(currentDim + 1)
+                }
+        }
+        recursiveAccumulate(0)
+    }
 }
 
 

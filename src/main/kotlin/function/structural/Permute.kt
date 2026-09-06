@@ -4,15 +4,12 @@ import io.github.youssefrashidy.function.Function
 import io.github.youssefrashidy.function.FunctionInput
 import io.github.youssefrashidy.tensor.Tensor
 
-class Permute : Function() {
+object Permute : Function() {
     override fun forward(input: FunctionInput): Tensor {
         require(input is FunctionInput.PermuteInput){
 
         }
-        require(input.tensors.size == 1){
-
-        }
-        val inputTensor = input.tensors[0]
+        val inputTensor = input.tensors
         val permutation = input.permute
         require(permutation.size == inputTensor.rank){
             "Permutation must have ${inputTensor.shape.size} dimensions, but got ${permutation.size}"
