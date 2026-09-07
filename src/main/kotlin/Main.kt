@@ -24,6 +24,10 @@ fun main() {
     val g = y * y           // [16, 25]  <- y reused
     val h = f + g           // [68, 139]
 
+    println("h = ${h.backedArray.contentToString()}")
+
     val loss = Sum(h, intArrayOf(0), false)
+    println("loss = ${loss.backedArray.contentToString()}")   // expect 207.0
+
     loss.backward()
 }

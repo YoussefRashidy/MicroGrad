@@ -1,4 +1,4 @@
-package function.structural
+package io.github.youssefrashidy.function.structural
 
 import io.github.youssefrashidy.MicroGrad
 import io.github.youssefrashidy.function.BackwardFunction

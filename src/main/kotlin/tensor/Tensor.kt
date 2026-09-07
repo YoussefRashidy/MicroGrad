@@ -9,10 +9,10 @@ import io.github.youssefrashidy.function.operators.Subtraction
 import kotlin.math.max
 
 class Tensor internal constructor(
-    internal val backedArray: DoubleArray,
+    val backedArray: DoubleArray,
     val shape: IntArray,
     val requiresGrad: Boolean = true,
-    internal val strides: IntArray = computeStrides(shape)
+    val strides: IntArray = computeStrides(shape)
 ) {
     val rank: Int get() = shape.size
     val size: Int get() = backedArray.size
