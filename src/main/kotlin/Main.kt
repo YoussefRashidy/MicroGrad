@@ -1,33 +1,33 @@
 import io.github.youssefrashidy.MicroGrad
+import io.github.youssefrashidy.function.math.Exp
+import io.github.youssefrashidy.function.math.Log
+import io.github.youssefrashidy.function.math.Power
+import io.github.youssefrashidy.function.linalg.MatMul
 import io.github.youssefrashidy.function.reduction.Sum
+import io.github.youssefrashidy.function.reduction.Mean
+import io.github.youssefrashidy.tensor.*   // pulls in the Int/Double <-> Tensor operators
 
 fun main() {
+    // 2 samples, 3 features
+    val X = MicroGrad.tensor(doubleArrayOf(1.0, 2.0, -1.0, 0.0, 1.0, 3.0), intArrayOf(2, 3))
+    val y = MicroGrad.tensor(doubleArrayOf(1.0, 0.0), intArrayOf(2, 1))
 
-    val x = MicroGrad.tensor(
-        doubleArrayOf(2.0, 3.0),
-        intArrayOf(2),
-        requiresGrad = true
-    )
+    val w = MicroGrad.tensor(doubleArrayOf(0.5, -0.2, 0.1), intArrayOf(3, 1), requiresGrad = true)
+    val b = MicroGrad.scalar(0.2, requiresGrad = true)
 
-    val y = MicroGrad.tensor(
-        doubleArrayOf(4.0, 5.0),
-        intArrayOf(2),
-        requiresGrad = true
-    )
+    // --- forward ---
+    val z = MatMul(X, w) + b                       // (2,1); bias broadcasts over the batch
+    val p = 1 / (1 + Exp(-z))                       // sigmoid, built from primitives
+    val bce = -(y * Log(p) + (1 - y) * Log(1 - p))  // elementwise BCE, shape (2,1)
+    val meanLoss = Mean(bce, intArrayOf(0), false)  // reduce over the batch axis
 
-    val a = x * y          // [8, 15]
-    val b = a + x           // [10, 18]
-    val c = b * y           // [40, 90]
-    val d = c + a           // [48, 105]
-    val e = x * x           // [4, 9]   <- x reused
-    val f = e + d           // [52, 114]
-    val g = y * y           // [16, 25]  <- y reused
-    val h = f + g           // [68, 139]
+    val lambda = 0.1
+    val reg = lambda * Sum(Power(w, 2.0), intArrayOf(0, 1), false)  // w reused here too
 
-    println("h = ${h.backedArray.contentToString()}")
+    val total = meanLoss + reg
+    println("loss = ${total.backedArray[0]}")
 
-    val loss = Sum(h, intArrayOf(0), false)
-    println("loss = ${loss.backedArray.contentToString()}")   // expect 207.0
-
-    loss.backward()
+    total.backward()
+    println("w.grad = ${w.grad?.backedArray?.contentToString()}")
+    println("b.grad = ${b.grad?.backedArray?.contentToString()}")
 }
