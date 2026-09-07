@@ -77,4 +77,5 @@ object Max: Function() {
             accumulateAtIndices(inputTensor.grad!!, outputTensor.grad!!,maxIndices)
         }
     }
+    operator fun invoke(tensor: Tensor, axes: IntArray, keepDims: Boolean = false): Tensor = forward(FunctionInput.MaxInput(tensor, axes, keepDims))
 }

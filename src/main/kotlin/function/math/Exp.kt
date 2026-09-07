@@ -47,4 +47,5 @@ object Exp : Function() {
             }
         }
     }
+    operator fun invoke(tensor: Tensor): Tensor = forward(FunctionInput.Tensors(arrayOf(tensor)))
 }

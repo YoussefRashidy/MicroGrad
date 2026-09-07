@@ -93,4 +93,6 @@ object Mean: Function() {
             accumulateAdditionDivided(inputTensor.grad!!, broadcastedOutputGrad,divisor)
         }
     }
+    operator fun invoke(tensor: Tensor, axes: IntArray, keepDims: Boolean = false): Tensor = forward(FunctionInput.MeanInput(tensor, axes, keepDims))
+
 }

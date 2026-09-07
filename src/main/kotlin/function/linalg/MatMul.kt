@@ -148,5 +148,6 @@ object MatMul : Function() {
         }
 
     }
+    operator fun invoke(a: Tensor, b: Tensor): Tensor = forward(FunctionInput.MatMulInput(a, b))
 
 }

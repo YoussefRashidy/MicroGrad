@@ -1,6 +1,10 @@
 package io.github.youssefrashidy.tensor
 
 import io.github.youssefrashidy.function.BackwardFunction
+import io.github.youssefrashidy.function.operators.Addition
+import io.github.youssefrashidy.function.operators.Division
+import io.github.youssefrashidy.function.operators.Multiplication
+import io.github.youssefrashidy.function.operators.Subtraction
 import kotlin.math.max
 
 open class Tensor(val backedArray: DoubleArray , val shape : IntArray , val requiresGrad: Boolean = true ,val strides : IntArray = computeStrides(shape) ) {
@@ -101,5 +105,10 @@ open class Tensor(val backedArray: DoubleArray , val shape : IntArray , val requ
         }
         return Tensor(this.backedArray,targetShape,this.requiresGrad,viewStrides)
     }
+
+    operator fun plus(other: Tensor)  = Addition(this,other)
+    operator fun minus(other: Tensor) = Subtraction(this, other)
+    operator fun times(other: Tensor) = Multiplication(this, other)
+    operator fun div(other: Tensor) = Division(this, other)
 
 }

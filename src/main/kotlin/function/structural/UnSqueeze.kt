@@ -35,4 +35,6 @@ object UnSqueeze: Function() {
                 accumulateAddition(inputTensor.grad!! ,squeezedGrad )
             }
     }
+    operator fun invoke(tensor : Tensor) : Tensor = forward(FunctionInput.Tensors(arrayOf(tensor)))
+
 }

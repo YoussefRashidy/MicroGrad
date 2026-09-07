@@ -5,7 +5,7 @@ import io.github.youssefrashidy.function.FunctionInput
 import io.github.youssefrashidy.function.structural.Reshape
 import io.github.youssefrashidy.tensor.Tensor
 
-object Min: Function() {
+object Min : Function() {
     override fun forward(input: FunctionInput): Tensor {
         require(input is FunctionInput.MinInput) {
 
@@ -32,8 +32,7 @@ object Min: Function() {
             if (reduced[i]) {
                 if (keepDims)
                     outputDims[i] = 1
-            }
-            else {
+            } else {
                 outputDims[if (keepDims) i else j] = tensor.shape[i]
 
                 if (!keepDims)
@@ -77,8 +76,7 @@ object Min: Function() {
                         ] = tensor.getFlatIndex(*indices)
                     }
                 }
-            }
-            else {
+            } else {
                 for (i in 0 until inputDims[currentDim]) {
                     indices[currentDim] = i
 
@@ -134,4 +132,6 @@ object Min: Function() {
             )
         }
     }
+
+    operator fun invoke(tensor: Tensor, axes: IntArray, keepDims: Boolean = false): Tensor = forward(FunctionInput.MinInput(tensor, axes, keepDims))
 }

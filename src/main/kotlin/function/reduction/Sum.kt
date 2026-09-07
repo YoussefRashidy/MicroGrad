@@ -75,4 +75,5 @@ object Sum: Function() {
             accumulateAddition(inputTensor.grad!!,broadcastedOutputGrad)
         }
     }
+    operator fun invoke(tensor: Tensor, axes: IntArray, keepDims: Boolean = false): Tensor = forward(FunctionInput.SumInput(tensor, axes, keepDims))
 }

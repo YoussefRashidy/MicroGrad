@@ -69,4 +69,6 @@ object Permute : Function() {
 
         return inverse
     }
+    operator fun invoke(tensor: Tensor, permutation: IntArray): Tensor = forward(FunctionInput.PermuteInput(tensor, permutation))
+    operator fun invoke(tensor: Tensor, vararg permutation: Int): Tensor = forward(FunctionInput.PermuteInput(tensor, permutation))
 }

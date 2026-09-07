@@ -3,6 +3,7 @@ package function.structural
 import io.github.youssefrashidy.function.BackwardFunction
 import io.github.youssefrashidy.function.Function
 import io.github.youssefrashidy.function.FunctionInput
+import io.github.youssefrashidy.function.structural.Squeeze
 import io.github.youssefrashidy.tensor.Tensor
 
 object Transpose : Function() {
@@ -46,4 +47,6 @@ object Transpose : Function() {
         transposedShape[1] = tensor.strides[0]
         return Tensor(tensor.backedArray, transposedShape,tensor.requiresGrad,transposedStride)
     }
+    operator fun invoke(tensor : Tensor) : Tensor = forward(FunctionInput.Tensors(arrayOf(tensor)))
+
 }
