@@ -40,7 +40,7 @@ object Permute : Function() {
         val inputTensor = tensors[0]
         val outputTensor = tensors[1]
         val inversePermute = inversePermutation(permutation)
-        if(inputTensor.grad== null)
+        if(inputTensor.grad== null && inputTensor.requiresGrad)
             inputTensor.grad = Tensor(DoubleArray(inputTensor.size),inputTensor.shape,false,inputTensor.strides)
         if(inputTensor.requiresGrad){
             outputTensor.gradFn = {

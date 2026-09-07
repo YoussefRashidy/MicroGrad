@@ -5,7 +5,7 @@ import io.github.youssefrashidy.function.FunctionInput
 import io.github.youssefrashidy.function.structural.Reshape
 import io.github.youssefrashidy.tensor.Tensor
 
-class Sum: Function() {
+object Sum: Function() {
     override fun forward(input: FunctionInput): Tensor {
         require(input is FunctionInput.SumInput){
 
@@ -53,7 +53,7 @@ class Sum: Function() {
                     indices[currentDim] = i
                     if(!reduced[currentDim])
                         outputIndices[outputDim] = i
-                    recursiveSum(currentDim+1, if(!reduced[currentDim]) outputDim+ 1 else outputDim)
+                    recursiveSum(currentDim+1, if(!reduced[currentDim] || keepDims) (outputDim+ 1 )else outputDim)
                 }
             }
         }
@@ -67,11 +67,11 @@ class Sum: Function() {
         //TODO("Will settle for an API later")
     }
      private fun backward(inputTensor: Tensor , outputTensor: Tensor ,gradShape : IntArray) {
-        if(inputTensor.grad == null)
+        if(inputTensor.grad == null && inputTensor.requiresGrad)
             inputTensor.grad = Tensor(DoubleArray(inputTensor.size),inputTensor.shape,false,inputTensor.strides)
         outputTensor.gradFn = {
             val reshapedOutputGrad = Reshape.reshape(outputTensor.grad!!,gradShape)
-            val (_,broadcastedOutputGrad,_) = Tensor.broadcast(reshapedOutputGrad,inputTensor.grad!!)
+            val (_,broadcastedOutputGrad,_) = Tensor.broadcast(inputTensor.grad!!,reshapedOutputGrad)
             accumulateAddition(inputTensor.grad!!,broadcastedOutputGrad)
         }
     }

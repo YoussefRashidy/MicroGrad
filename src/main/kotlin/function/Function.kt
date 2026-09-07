@@ -6,6 +6,7 @@ import kotlin.math.pow
 abstract class Function {
     abstract fun forward(input: FunctionInput) : Tensor
     abstract fun backward(vararg tensors: Tensor) : Unit
+    operator fun invoke(input: FunctionInput): Tensor = forward(input)
 
     protected fun accumulateAddition(targetGradView: Tensor, outputGrad: Tensor) {
         val targetShape = outputGrad.shape
@@ -36,13 +37,13 @@ abstract class Function {
         fun recursiveAccumulate(currentDim: Int) {
             if (currentDim == targetShape.size - 1) {
                 for(i in 0 until targetShape[currentDim]) {
-                    indices[i] = i
-                    targetGradView.set(*indices, value = targetGradView.get(*indices)+ targetGradView.get(*indices) - outputGrad.get(*indices))
+                    indices[currentDim] = i
+                    targetGradView.set(*indices, value = targetGradView.get(*indices)- outputGrad.get(*indices))
                 }
             }
             else
                 for(i in 0 until targetShape[currentDim]) {
-                    indices[i] = i
+                    indices[currentDim] = i
                     recursiveAccumulate(currentDim + 1)
                 }
         }
@@ -56,13 +57,13 @@ abstract class Function {
         fun recursiveAccumulate(currentDim: Int) {
             if (currentDim == targetShape.size - 1) {
                 for(i in 0 until targetShape[currentDim]) {
-                    indices[i] = i
+                    indices[currentDim] = i
                     targetGradView.set(*indices, value = targetGradView.get(*indices)+otherTensor.get(*indices) * outputGrad.get(*indices))
                 }
             }
             else
                 for(i in 0 until targetShape[currentDim]) {
-                    indices[i] = i
+                    indices[currentDim] = i
                     recursiveAccumulate(currentDim + 1)
                 }
         }
@@ -76,13 +77,13 @@ abstract class Function {
         fun recursiveAccumulate(currentDim: Int) {
             if (currentDim == targetShape.size - 1) {
                 for(i in 0 until targetShape[currentDim]) {
-                    indices[i] = i
+                    indices[currentDim] = i
                     targetGradView.set(*indices, value =  targetGradView.get(*indices)+outputGrad.get(*indices) / otherTensor.get(*indices) )
                 }
             }
             else
                 for(i in 0 until targetShape[currentDim]) {
-                    indices[i] = i
+                    indices[currentDim] = i
                     recursiveAccumulate(currentDim + 1)
                 }
         }
@@ -96,7 +97,7 @@ abstract class Function {
         fun recursiveAccumulate(currentDim: Int) {
             if (currentDim == targetShape.size - 1) {
                 for(i in 0 until targetShape[currentDim]) {
-                    indices[i] = i
+                    indices[currentDim] = i
                     val b = selfTensor.get(*indices)
                     val partialB = -otherTensor.get(*indices)/(b*b)
                     targetGradView.set(*indices, value =  targetGradView.get(*indices)+outputGrad.get(*indices)*partialB)
@@ -104,7 +105,7 @@ abstract class Function {
             }
             else
                 for(i in 0 until targetShape[currentDim]) {
-                    indices[i] = i
+                    indices[currentDim] = i
                     recursiveAccumulate(currentDim + 1)
                 }
         }
@@ -117,13 +118,13 @@ abstract class Function {
         fun recursiveAccumulate(currentDim: Int) {
             if (currentDim == targetShape.size - 1) {
                 for(i in 0 until targetShape[currentDim]) {
-                    indices[i] = i
+                    indices[currentDim] = i
                     inputGrad.set(*indices, value =  inputGrad.get(*indices)+outputGrad.get(*indices)*output.get(*indices))
                 }
             }
             else
                 for(i in 0 until targetShape[currentDim]) {
-                    indices[i] = i
+                    indices[currentDim] = i
                     recursiveAccumulate(currentDim + 1)
                 }
         }
@@ -204,19 +205,19 @@ abstract class Function {
     }
 
     protected fun accumulateDot(targetGradView: Tensor ,otherTensor: Tensor ,outputGrad: Tensor){
-        val targetShape = outputGrad.shape
+        val targetShape = targetGradView.shape
         val indices = IntArray(targetShape.size)
 
         fun recursiveAccumulate(currentDim: Int) {
             if (currentDim == targetShape.size - 1) {
                 for(i in 0 until targetShape[currentDim]) {
-                    indices[i] = i
+                    indices[currentDim] = i
                     targetGradView.set(*indices, value = targetGradView.get(*indices)+ otherTensor.get(*indices) * outputGrad[0])
                 }
             }
             else
                 for(i in 0 until targetShape[currentDim]) {
-                    indices[i] = i
+                    indices[currentDim] = i
                     recursiveAccumulate(currentDim + 1)
                 }
         }

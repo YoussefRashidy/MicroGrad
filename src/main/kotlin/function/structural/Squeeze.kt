@@ -4,7 +4,7 @@ import io.github.youssefrashidy.function.Function
 import io.github.youssefrashidy.function.FunctionInput
 import io.github.youssefrashidy.tensor.Tensor
 
-class Squeeze : Function() {
+object Squeeze : Function() {
 
     override fun forward(input: FunctionInput): Tensor {
         require(input is FunctionInput.Tensors) {

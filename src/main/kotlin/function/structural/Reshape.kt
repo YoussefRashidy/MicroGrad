@@ -23,8 +23,8 @@ object Reshape: Function() {
     override fun backward(vararg tensors: Tensor ) {
         val inputTensor = tensors[0]
         val outputTensor = tensors[1]
-        if(inputTensor.grad == null)
-            inputTensor.grad = Tensor(DoubleArray(inputTensor.shape.size){0.0},inputTensor.shape,false,inputTensor.strides)
+        if(inputTensor.grad == null && inputTensor.requiresGrad)
+            inputTensor.grad = Tensor(DoubleArray(inputTensor.size){0.0},inputTensor.shape,false,inputTensor.strides)
         if (inputTensor.requiresGrad){
             outputTensor.gradFn = {
                  accumulateAddition(inputTensor.grad!!,reshape(outputTensor.grad!!,inputTensor.shape))

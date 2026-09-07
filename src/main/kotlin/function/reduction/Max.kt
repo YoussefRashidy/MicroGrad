@@ -5,7 +5,7 @@ import io.github.youssefrashidy.function.FunctionInput
 import io.github.youssefrashidy.function.structural.Reshape
 import io.github.youssefrashidy.tensor.Tensor
 
-class Max: Function() {
+object Max: Function() {
     override fun forward(input: FunctionInput): Tensor {
         require(input is FunctionInput.MaxInput){
 
@@ -56,7 +56,7 @@ class Max: Function() {
                     indices[currentDim] = i
                     if(!reduced[currentDim])
                         outputIndices[outputDim] = i
-                    recursiveMax(currentDim+1, if(!reduced[currentDim]) outputDim+ 1 else outputDim)
+                    recursiveMax(currentDim+1, if(!reduced[currentDim] || keepDims) outputDim+ 1 else outputDim)
                 }
             }
         }
@@ -70,7 +70,7 @@ class Max: Function() {
         TODO("Not yet implemented")
     }
     private fun backward(inputTensor: Tensor , outputTensor : Tensor , maxIndices: IntArray){
-        if (inputTensor.grad == null)
+        if (inputTensor.grad == null && inputTensor.requiresGrad)
             inputTensor.grad = Tensor(DoubleArray(inputTensor.size), inputTensor.shape, false, inputTensor.strides)
 
         outputTensor.gradFn = {

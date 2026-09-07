@@ -6,7 +6,7 @@ import io.github.youssefrashidy.function.structural.Permute
 import io.github.youssefrashidy.function.structural.Reshape
 import io.github.youssefrashidy.tensor.Tensor
 
-class MatMul : Function() {
+object MatMul : Function() {
     override fun forward(input: FunctionInput): Tensor {
         require(input is FunctionInput.MatMulInput){
 
@@ -46,16 +46,16 @@ class MatMul : Function() {
         var product = 0.0
         for(i in 0 until a.size)
             product+= a[i]*b[i]
-        val output = Tensor(DoubleArray(1){product}, IntArray(1){1},a.requiresGrad || b.requiresGrad)
+        val output = Tensor(doubleArrayOf(product), intArrayOf(1),a.requiresGrad || b.requiresGrad)
         output.prevTensors = arrayOf(a,b)
         dotBackward(a,b,output)
         return output
     }
 
     private fun dotBackward(a : Tensor , b: Tensor , output: Tensor){
-        if(a.grad == null)
+        if(a.grad == null && a.requiresGrad)
             a.grad = Tensor(DoubleArray(a.size){0.0},a.shape,false,a.strides)
-        if(b.grad == null)
+        if(b.grad == null && b.requiresGrad)
             b.grad = Tensor(DoubleArray(b.size){0.0},b.shape,false,b.strides)
         output.gradFn = {
             if(a.requiresGrad){
@@ -76,7 +76,7 @@ class MatMul : Function() {
         val bBatch = b.shape.copyOfRange(0, b.shape.size - 2)
         val batchBroadcastedShape = Tensor.broadcastShape(aBatch,bBatch)
         val n = a.shape[a.shape.lastIndex - 1]
-        val p =  b.shape[b.rank - 1]
+        val p =  a.shape[a.rank - 1]
         val m = b.shape.last()
         val targetShape = batchBroadcastedShape + intArrayOf(n,m)
         val aBroadcasted = a.broadcastTo(batchBroadcastedShape + a.shape.copyOfRange(a.shape.size-2,a.shape.size))
@@ -93,6 +93,7 @@ class MatMul : Function() {
                 }
             }
         }
+        batchRecurse(0)
         return outputTensor
     }
 
@@ -101,14 +102,14 @@ class MatMul : Function() {
         val bIndices = batchDims + IntArray(2){0}
         val cIndices = batchDims + IntArray(2){0}
         for (i in 0 until n) {
-            for (k in 0 until m) {
+            for (k in 0 until p) {
                 aIndices[aIndices.lastIndex-1] = i
                 aIndices[aIndices.lastIndex] = k
                 bIndices[bIndices.lastIndex-1] = k
                 cIndices[cIndices.lastIndex-1] = i
                 val a = a.get(*aIndices)
 
-                for (j in 0 until p) {
+                for (j in 0 until m) {
                     bIndices[bIndices.lastIndex] = j
                     cIndices[cIndices.lastIndex] = j
                     c.set(*cIndices , value = c.get(*cIndices) + a*b.get(*bIndices))
@@ -125,17 +126,24 @@ class MatMul : Function() {
         output.gradFn = {
             if(a.requiresGrad){
                 aReshaped.grad = Reshape.reshape(a.grad!!,aReshaped.shape)
-                val permuteInput = FunctionInput.PermuteInput(b,b.shape.copyOfRange(0,b.shape.size - 2) + intArrayOf(b.shape[b.shape.lastIndex] , b.shape[b.shape.lastIndex-1]))
+                val permutation = IntArray(b.rank) { it }
+                permutation[b.rank - 2] = b.rank - 1
+                permutation[b.rank - 1] = b.rank - 2
+
+                val permuteInput = FunctionInput.PermuteInput(b,permutation)
                 val bPermuted = Permute.forward(permuteInput)
                 val chainedGrad = matrixMultiply(output.grad!!,bPermuted)
                 accumulateAddition(aReshaped.grad!!,chainedGrad)
             }
             if(b.requiresGrad){
-                aReshaped.grad = Reshape.reshape(a.grad!!,aReshaped.shape)
-                val permuteInput = FunctionInput.PermuteInput(a,a.shape.copyOfRange(0,b.shape.size - 2) + intArrayOf(a.shape[a.shape.lastIndex] , a.shape[a.shape.lastIndex-1]))
+                bReshaped.grad = Reshape.reshape(b.grad!!,bReshaped.shape)
+                val permutation = IntArray(a.rank) { it }
+                permutation[b.rank - 2] = a.rank - 1
+                permutation[b.rank - 1] = a.rank - 2
+                val permuteInput = FunctionInput.PermuteInput(a,permutation)
                 val aPermuted = Permute.forward(permuteInput)
                 val chainedGrad = matrixMultiply(aPermuted,output.grad!!)
-                accumulateAddition(aReshaped.grad!!,chainedGrad)
+                accumulateAddition(bReshaped.grad!!,chainedGrad)
             }
         }
 

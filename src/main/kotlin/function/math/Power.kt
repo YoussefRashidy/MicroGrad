@@ -5,7 +5,7 @@ import io.github.youssefrashidy.function.FunctionInput
 import io.github.youssefrashidy.tensor.Tensor
 import kotlin.math.pow
 
-class Power : Function() {
+object Power : Function() {
 
     override fun forward(input: FunctionInput): Tensor {
         require(input is FunctionInput.PowerInput) {
@@ -49,7 +49,7 @@ class Power : Function() {
     }
 
     private fun backward(inputTensor: Tensor, outputTensor: Tensor, power: Double) {
-        if (inputTensor.grad == null)
+        if (inputTensor.grad == null && inputTensor.requiresGrad)
             inputTensor.grad = Tensor(DoubleArray(inputTensor.size) { 0.0 }, inputTensor.shape, false, inputTensor.strides)
 
         if (inputTensor.requiresGrad) {
@@ -58,4 +58,5 @@ class Power : Function() {
             }
         }
     }
+    operator fun invoke(tensor: Tensor, power: Double): Tensor = forward(FunctionInput.PowerInput(tensor, power))
 }

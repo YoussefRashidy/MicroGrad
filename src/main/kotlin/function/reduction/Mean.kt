@@ -5,10 +5,10 @@ import io.github.youssefrashidy.function.FunctionInput
 import io.github.youssefrashidy.function.structural.Reshape
 import io.github.youssefrashidy.tensor.Tensor
 
-class Mean: Function() {
+object Mean: Function() {
     override fun forward(input: FunctionInput): Tensor {
         require(input is FunctionInput.MeanInput) {
-
+            "Expected input type to be ${FunctionInput.MeanInput::class.simpleName} but got ${input::class.simpleName}"
         }
 
         val tensor = input.tensor
@@ -66,7 +66,7 @@ class Mean: Function() {
                     if (!reduced[currentDim])
                         outputIndices[outputDim] = i
 
-                    recursiveMean(currentDim + 1, if (!reduced[currentDim]) outputDim + 1 else outputDim)
+                    recursiveMean(currentDim + 1, if (!reduced[currentDim] || keepDims) outputDim + 1 else outputDim)
                 }
             }
         }
@@ -84,12 +84,12 @@ class Mean: Function() {
     }
 
     private fun backward(inputTensor: Tensor, outputTensor: Tensor, gradShape: IntArray , divisor: Int) {
-        if (inputTensor.grad == null)
+        if (inputTensor.grad == null && inputTensor.requiresGrad)
             inputTensor.grad = Tensor(DoubleArray(inputTensor.size), inputTensor.shape, false, inputTensor.strides)
 
         outputTensor.gradFn = {
             val reshapedOutputGrad = Reshape.reshape(outputTensor.grad!!, gradShape)
-            val (_, broadcastedOutputGrad, _) = Tensor.broadcast(reshapedOutputGrad, inputTensor.grad!!)
+            val (_, broadcastedOutputGrad, _) = Tensor.broadcast(inputTensor.grad!!,reshapedOutputGrad)
             accumulateAdditionDivided(inputTensor.grad!!, broadcastedOutputGrad,divisor)
         }
     }

@@ -5,7 +5,7 @@ import io.github.youssefrashidy.function.FunctionInput
 import io.github.youssefrashidy.function.structural.Reshape
 import io.github.youssefrashidy.tensor.Tensor
 
-class Min: Function() {
+object Min: Function() {
     override fun forward(input: FunctionInput): Tensor {
         require(input is FunctionInput.MinInput) {
 
@@ -87,7 +87,7 @@ class Min: Function() {
 
                     recursiveMin(
                         currentDim + 1,
-                        if (!reduced[currentDim])
+                        if (!reduced[currentDim] || keepDims)
                             outputDim + 1
                         else
                             outputDim
@@ -118,7 +118,7 @@ class Min: Function() {
         outputTensor: Tensor,
         minIndices: IntArray
     ) {
-        if (inputTensor.grad == null)
+        if (inputTensor.grad == null && inputTensor.requiresGrad)
             inputTensor.grad = Tensor(
                 DoubleArray(inputTensor.size),
                 inputTensor.shape,

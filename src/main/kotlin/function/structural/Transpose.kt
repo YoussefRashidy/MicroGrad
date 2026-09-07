@@ -5,7 +5,7 @@ import io.github.youssefrashidy.function.Function
 import io.github.youssefrashidy.function.FunctionInput
 import io.github.youssefrashidy.tensor.Tensor
 
-class Transpose : Function() {
+object Transpose : Function() {
     override fun forward(input: FunctionInput): Tensor {
         require(input is FunctionInput.Tensors){
             "Expected FunctionInput.Tensors, but got ${input::class.simpleName}"

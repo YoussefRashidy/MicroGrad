@@ -5,9 +5,9 @@ import io.github.youssefrashidy.function.Function
 import io.github.youssefrashidy.function.FunctionInput
 import io.github.youssefrashidy.tensor.Tensor
 
-class Division: Function() {
+object Division: Function() {
     override fun forward(input: FunctionInput): Tensor {
-        require(input is FunctionInput.ReshapeInput){
+        require(input is FunctionInput.Tensors){
 
         }
         val tensors = input.tensors
@@ -36,6 +36,8 @@ class Division: Function() {
                 }
         }
         recursiveDivision(0,indices)
+        outputTensor.prevTensors = arrayOf(tensors[0],tensors[1])
+        backward(tensors[0], tensors[1], aBroadcasted, bBroadcasted, outputTensor)
 
         return outputTensor
     }
@@ -45,9 +47,9 @@ class Division: Function() {
             "Binary Division backward propagation requires three parameters of three tensor but got ${tensors.size}"
         }
         val (a,b,aBroadcasted,bBroadcasted,outputTensor) = tensors
-        if(a.grad == null)
+        if(a.grad == null && a.requiresGrad)
             a.grad = Tensor(DoubleArray(a.size){0.0},a.shape,false,a.strides)
-        if(b.grad == null)
+        if(b.grad == null && b.requiresGrad)
             b.grad = Tensor(DoubleArray(b.size){0.0},b.shape,false,b.strides)
 
         outputTensor.gradFn = {
@@ -60,7 +62,9 @@ class Division: Function() {
                 val bGradBroadcasted = Tensor(b.grad!!.backedArray,bBroadcasted.shape,false,bBroadcasted.strides)
                 accumulateDivisionDenominator(bGradBroadcasted,bBroadcasted ,aBroadcasted,outputTensor.grad!!)
             }
-        } as BackwardFunction?
+        }
     }
+    operator fun invoke(a: Tensor, b: Tensor): Tensor = Addition.forward(FunctionInput.Tensors(arrayOf(a, b)))
+
 
 }

@@ -5,7 +5,7 @@ import io.github.youssefrashidy.function.Function
 import io.github.youssefrashidy.function.FunctionInput
 import io.github.youssefrashidy.tensor.Tensor
 
-class Addition: Function() {
+object Addition: Function() {
     override fun forward(input: FunctionInput): Tensor {
         require(input is FunctionInput.Tensors){
 
@@ -41,9 +41,9 @@ class Addition: Function() {
             "Binary addition backward propagation requires three parameters of three tensor but got ${tensors.size}"
         }
         val (a,b,aBroadcasted,bBroadcasted,outputTensor) = tensors
-        if(a.grad == null)
+        if(a.grad == null && a.requiresGrad)
             a.grad = Tensor(DoubleArray(a.size){0.0},a.shape,false,a.strides)
-        if(b.grad == null)
+        if(b.grad == null && b.requiresGrad)
             b.grad = Tensor(DoubleArray(b.size){0.0},b.shape,false,b.strides)
 
         outputTensor.gradFn = {
@@ -58,5 +58,7 @@ class Addition: Function() {
             }
         }
     }
+
+    operator fun invoke(a: Tensor, b: Tensor): Tensor = forward(FunctionInput.Tensors(arrayOf(a,b)))
 
 }

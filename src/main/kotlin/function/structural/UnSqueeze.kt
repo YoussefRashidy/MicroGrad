@@ -4,7 +4,7 @@ import io.github.youssefrashidy.function.Function
 import io.github.youssefrashidy.function.FunctionInput
 import io.github.youssefrashidy.tensor.Tensor
 
-class UnSqueeze: Function() {
+object UnSqueeze: Function() {
     override fun forward(input: FunctionInput): Tensor {
         require(input is FunctionInput.Tensors){
             "Expected FunctionInput.Tensors, but got ${input::class.simpleName}"

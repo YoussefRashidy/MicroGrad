@@ -5,7 +5,7 @@ import io.github.youssefrashidy.function.FunctionInput
 import io.github.youssefrashidy.tensor.Tensor
 import kotlin.math.ln
 
-class Log : Function() {
+object Log : Function() {
     override fun forward(input: FunctionInput): Tensor {
         require(input is FunctionInput.Tensors) {
             "Expected Tensors input, but got ${input::class.simpleName}"
@@ -65,7 +65,7 @@ class Log : Function() {
         val inputTensor = tensors[0]
         val outputTensor = tensors[1]
 
-        if (inputTensor.grad == null)
+        if (inputTensor.grad == null && inputTensor.requiresGrad)
             inputTensor.grad = Tensor(
                 DoubleArray(inputTensor.size) { 0.0 },
                 inputTensor.shape,
