@@ -16,6 +16,44 @@ object MicroGrad {
         }
     }
 
+    private class Stack<T> {
+        private val deque = ArrayDeque<T>()
+
+        fun push(item: T) = deque.addLast(item)
+        fun pop(): T = deque.removeLast()
+        fun peek(): T = deque.last()
+        fun isEmpty(): Boolean = deque.isEmpty()
+        val size: Int get() = deque.size
+    }
+
+    fun backward(loss : Tensor , retainGraph: Boolean): Unit{
+        require(loss.size == 1) {
+            "backward() can only be called on a scalar loss"
+        }
+
+        val stack = Stack<Tensor>()
+        val visited = mutableSetOf<Tensor>()
+        fun dfsTopoSort(node : Tensor): Unit{
+            visited.add(node)
+            for(tensor in node.prevTensors){
+                if(!visited.contains(tensor)){
+                    dfsTopoSort(tensor)
+                }
+            }
+            stack.push(node)
+        }
+        loss.grad = scalar(1.0,false)
+        dfsTopoSort(loss)
+        while (!stack.isEmpty()){
+            val tensor = stack.pop()
+            tensor.gradFn?.apply()
+            if(!retainGraph){
+                tensor.prevTensors = emptyArray()
+                tensor.gradFn = null
+            }
+        }
+    }
+
     fun tensor(data: DoubleArray , shape : IntArray , requiresGrad : Boolean = gradEnabled ) = Tensor(
         data,
         shape,
