@@ -1,5 +1,6 @@
 package io.github.youssefrashidy.function.math
 
+import io.github.youssefrashidy.MicroGrad
 import io.github.youssefrashidy.function.Function
 import io.github.youssefrashidy.function.FunctionInput
 import io.github.youssefrashidy.tensor.Tensor
@@ -54,9 +55,10 @@ object Log : Function() {
 
         recursiveLog(0, indices)
 
-        outputTensor.prevTensors = arrayOf(tensor)
-
-        backward(tensor, outputTensor)
+        if(MicroGrad.gradEnabled){
+            outputTensor.prevTensors = arrayOf(tensor)
+            backward(tensor, outputTensor)
+        }
 
         return outputTensor
     }

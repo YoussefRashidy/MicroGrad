@@ -1,5 +1,6 @@
 package io.github.youssefrashidy.function.reduction
 
+import io.github.youssefrashidy.MicroGrad
 import io.github.youssefrashidy.function.Function
 import io.github.youssefrashidy.function.FunctionInput
 import io.github.youssefrashidy.function.structural.Reshape
@@ -58,8 +59,11 @@ object Sum: Function() {
             }
         }
         recursiveSum(0,0)
-        outputTensor.prevTensors = arrayOf(tensor)
-        backward(tensor,outputTensor , keepDimsShape)
+        if(MicroGrad.gradEnabled){
+            outputTensor.prevTensors = arrayOf(tensor)
+            backward(tensor,outputTensor , keepDimsShape)
+        }
+
         return outputTensor
     }
 

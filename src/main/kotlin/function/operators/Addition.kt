@@ -1,9 +1,11 @@
 package io.github.youssefrashidy.function.operators
 
+import io.github.youssefrashidy.MicroGrad
 import io.github.youssefrashidy.function.BackwardFunction
 import io.github.youssefrashidy.function.Function
 import io.github.youssefrashidy.function.FunctionInput
 import io.github.youssefrashidy.tensor.Tensor
+import kotlin.math.abs
 
 object Addition: Function() {
     override fun forward(input: FunctionInput): Tensor {
@@ -32,7 +34,10 @@ object Addition: Function() {
                 }
         }
         recursiveAddition(0,indices)
-
+        if(MicroGrad.gradEnabled){
+            outputTensor.prevTensors = arrayOf(tensors[0],tensors[1])
+            backward(tensors[0],tensors[1], aBroadcasted,bBroadcasted,outputTensor)
+        }
         return outputTensor
     }
 

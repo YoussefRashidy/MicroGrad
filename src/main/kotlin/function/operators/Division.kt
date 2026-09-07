@@ -1,5 +1,6 @@
 package io.github.youssefrashidy.function.operators
 
+import io.github.youssefrashidy.MicroGrad
 import io.github.youssefrashidy.function.BackwardFunction
 import io.github.youssefrashidy.function.Function
 import io.github.youssefrashidy.function.FunctionInput
@@ -36,8 +37,11 @@ object Division: Function() {
                 }
         }
         recursiveDivision(0,indices)
-        outputTensor.prevTensors = arrayOf(tensors[0],tensors[1])
-        backward(tensors[0], tensors[1], aBroadcasted, bBroadcasted, outputTensor)
+        if(MicroGrad.gradEnabled){
+            outputTensor.prevTensors = arrayOf(tensors[0],tensors[1])
+            backward(tensors[0], tensors[1], aBroadcasted, bBroadcasted, outputTensor)
+        }
+
 
         return outputTensor
     }

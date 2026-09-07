@@ -1,5 +1,6 @@
 package io.github.youssefrashidy.function.structural
 
+import io.github.youssefrashidy.MicroGrad
 import io.github.youssefrashidy.function.Function
 import io.github.youssefrashidy.function.FunctionInput
 import io.github.youssefrashidy.tensor.Tensor
@@ -15,8 +16,11 @@ object Reshape: Function() {
             "Tensor array sizes should be 1, but ${tensors.size}"
         }
         val output = reshape(tensors[0], shape)
-        output.prevTensors = arrayOf(tensors[0])
-        backward(tensors[0], output)
+        if(MicroGrad.gradEnabled) {
+            output.prevTensors = arrayOf(tensors[0])
+            backward(tensors[0], output)
+        }
+
         return output
     }
 

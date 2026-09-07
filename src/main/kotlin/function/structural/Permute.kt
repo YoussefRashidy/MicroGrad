@@ -1,5 +1,6 @@
 package io.github.youssefrashidy.function.structural
 
+import io.github.youssefrashidy.MicroGrad
 import io.github.youssefrashidy.function.Function
 import io.github.youssefrashidy.function.FunctionInput
 import io.github.youssefrashidy.tensor.Tensor
@@ -18,22 +19,16 @@ object Permute : Function() {
             "Invalid permutation: ${permutation.contentToString()}"
         }
         val outputTensor = permute(inputTensor,permutation)
-        outputTensor.prevTensors = arrayOf(inputTensor)
-        backward(inputTensor, outputTensor,permutation = permutation)
+        if(MicroGrad.gradEnabled) {
+            outputTensor.prevTensors = arrayOf(inputTensor)
+            backward(inputTensor, outputTensor, permutation = permutation)
+        }
         return outputTensor
     }
 
     // I will address this later
     override fun backward(vararg tensors: Tensor) {
-        val inputTensor = tensors[0]
-        val outputTensor = tensors[1]
-        if(inputTensor.grad== null)
-            inputTensor.grad = Tensor(DoubleArray(inputTensor.size),inputTensor.shape,false,inputTensor.strides)
-        if(inputTensor.requiresGrad){
-            outputTensor.gradFn = {
-
-            }
-        }
+        //TODO("Settle for an API)
     }
 
     private fun backward(vararg tensors: Tensor , permutation: IntArray) {

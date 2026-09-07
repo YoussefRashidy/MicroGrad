@@ -1,5 +1,6 @@
 package function.structural
 
+import io.github.youssefrashidy.MicroGrad
 import io.github.youssefrashidy.function.BackwardFunction
 import io.github.youssefrashidy.function.Function
 import io.github.youssefrashidy.function.FunctionInput
@@ -19,8 +20,10 @@ object Transpose : Function() {
         }
         val tensor = tensors[0]
         val outputTensor = transpose2D(tensor)
-        outputTensor.prevTensors = arrayOf(tensor)
-        backward(tensor, outputTensor)
+        if(MicroGrad.gradEnabled) {
+            outputTensor.prevTensors = arrayOf(tensor)
+            backward(tensor, outputTensor)
+        }
         return outputTensor
     }
 

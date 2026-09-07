@@ -1,5 +1,6 @@
 package io.github.youssefrashidy.function.structural
 
+import io.github.youssefrashidy.MicroGrad
 import io.github.youssefrashidy.function.Function
 import io.github.youssefrashidy.function.FunctionInput
 import io.github.youssefrashidy.tensor.Tensor
@@ -35,9 +36,11 @@ object Squeeze : Function() {
             inputTensor.requiresGrad
         )
 
-        outputTensor.prevTensors = arrayOf(inputTensor)
+        if(MicroGrad.gradEnabled) {
+            outputTensor.prevTensors = arrayOf(inputTensor)
+            backward(inputTensor, outputTensor)
+        }
 
-        backward(inputTensor, outputTensor)
 
         return outputTensor
     }

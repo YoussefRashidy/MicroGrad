@@ -1,7 +1,9 @@
 package io.github.youssefrashidy.function.reduction
 
+import io.github.youssefrashidy.MicroGrad
 import io.github.youssefrashidy.function.Function
 import io.github.youssefrashidy.function.FunctionInput
+import io.github.youssefrashidy.function.operators.Division
 import io.github.youssefrashidy.function.structural.Reshape
 import io.github.youssefrashidy.tensor.Tensor
 
@@ -61,8 +63,11 @@ object Max: Function() {
             }
         }
         recursiveMax(0,0)
-        outputTensor.prevTensors = arrayOf(tensor)
-        backward(tensor,outputTensor , maxIndices)
+        if(MicroGrad.gradEnabled){
+            outputTensor.prevTensors = arrayOf(tensor)
+            backward(tensor,outputTensor , maxIndices)
+        }
+
         return outputTensor
     }
 
