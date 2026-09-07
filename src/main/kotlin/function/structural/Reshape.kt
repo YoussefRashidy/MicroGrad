@@ -42,5 +42,5 @@ object Reshape: Function() {
         }
         return Tensor(tensor.backedArray,shape,tensor.requiresGrad)
     }
-    operator fun invoke(tensor: Tensor, vararg shape: Int): Tensor = forward(FunctionInput.ReshapeInput(arrayOf(tensor), shape))
+    operator fun invoke(tensor: Tensor, shape: IntArray): Tensor = forward(FunctionInput.ReshapeInput(arrayOf(tensor), shape))
 }
