@@ -35,7 +35,7 @@ object Multiplication : Function() {
         recursiveMultiplication(0,indices)
         if(MicroGrad.gradEnabled){
             outputTensor.prevTensors = arrayOf(tensors[0],tensors[1])
-            Division.backward(tensors[0], tensors[1], aBroadcasted, bBroadcasted, outputTensor)
+            backward(tensors[0], tensors[1], aBroadcasted, bBroadcasted, outputTensor)
         }
 
         return outputTensor
@@ -63,6 +63,6 @@ object Multiplication : Function() {
             }
         }
     }
-    operator fun invoke(a: Tensor, b: Tensor): Tensor = Addition.forward(FunctionInput.Tensors(arrayOf(a, b)))
+    operator fun invoke(a: Tensor, b: Tensor): Tensor = forward(FunctionInput.Tensors(arrayOf(a, b)))
 
 }

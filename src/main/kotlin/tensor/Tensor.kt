@@ -8,11 +8,11 @@ import io.github.youssefrashidy.function.operators.Multiplication
 import io.github.youssefrashidy.function.operators.Subtraction
 import kotlin.math.max
 
-open class Tensor(
-    val backedArray: DoubleArray,
+class Tensor internal constructor(
+    internal val backedArray: DoubleArray,
     val shape: IntArray,
     val requiresGrad: Boolean = true,
-    val strides: IntArray = computeStrides(shape)
+    internal val strides: IntArray = computeStrides(shape)
 ) {
     val rank: Int get() = shape.size
     val size: Int get() = backedArray.size
@@ -113,6 +113,33 @@ open class Tensor(
     }
 
     fun backward(retainGraph : Boolean = false) = MicroGrad.backward(this, retainGraph)
+
+    override fun toString(): String {
+        val builder = StringBuilder()
+
+        builder.append("Tensor(shape=")
+            .append(shape.contentToString())
+            .append(", data=")
+
+        fun appendDimension(currentDim: Int, indices: IntArray) {
+            if (currentDim == rank) {
+                builder.append(get(*indices))
+                return
+            }
+            builder.append("[")
+            for (i in 0 until shape[currentDim]) {
+                indices[currentDim] = i
+                if (i > 0)
+                    builder.append(", ")
+                appendDimension(currentDim + 1, indices)
+            }
+            builder.append("]")
+        }
+        appendDimension(0, IntArray(rank))
+        builder.append(")")
+
+        return builder.toString()
+    }
 
     operator fun plus(other: Tensor) = Addition(this, other)
     operator fun plus(other: Double): Tensor =

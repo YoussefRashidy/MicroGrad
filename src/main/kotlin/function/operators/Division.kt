@@ -68,7 +68,7 @@ object Division: Function() {
             }
         }
     }
-    operator fun invoke(a: Tensor, b: Tensor): Tensor = Addition.forward(FunctionInput.Tensors(arrayOf(a, b)))
+    operator fun invoke(a: Tensor, b: Tensor): Tensor = forward(FunctionInput.Tensors(arrayOf(a, b)))
 
 
 }

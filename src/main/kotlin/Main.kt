@@ -1,16 +1,29 @@
-package io.github.youssefrashidy
+import io.github.youssefrashidy.MicroGrad
+import io.github.youssefrashidy.function.reduction.Sum
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 fun main() {
-    val name = "Kotlin"
-    //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-    // to see how IntelliJ IDEA suggests fixing it.
-    println("Hello, $name!")
 
-    for (i in 1..5) {
-        //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-        // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-        println("i = $i")
-    }
+    val x = MicroGrad.tensor(
+        doubleArrayOf(2.0, 3.0),
+        intArrayOf(2),
+        requiresGrad = true
+    )
+
+    val y = MicroGrad.tensor(
+        doubleArrayOf(4.0, 5.0),
+        intArrayOf(2),
+        requiresGrad = true
+    )
+
+    val a = x * y          // [8, 15]
+    val b = a + x           // [10, 18]
+    val c = b * y           // [40, 90]
+    val d = c + a           // [48, 105]
+    val e = x * x           // [4, 9]   <- x reused
+    val f = e + d           // [52, 114]
+    val g = y * y           // [16, 25]  <- y reused
+    val h = f + g           // [68, 139]
+
+    val loss = Sum(h, intArrayOf(0), false)
+    loss.backward()
 }

@@ -85,6 +85,6 @@ object Log : Function() {
             }
         }
     }
-    operator fun invoke(tensor: Tensor): Tensor = Exp.forward(FunctionInput.Tensors(arrayOf(tensor)))
+    operator fun invoke(tensor: Tensor): Tensor = forward(FunctionInput.Tensors(arrayOf(tensor)))
 
 }
