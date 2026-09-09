@@ -2,10 +2,18 @@ package io.github.youssefrashidy.tensor
 
 import io.github.youssefrashidy.MicroGrad
 import io.github.youssefrashidy.function.BackwardFunction
+import io.github.youssefrashidy.function.linalg.MatMul
+import io.github.youssefrashidy.function.math.Exp
+import io.github.youssefrashidy.function.math.Log
+import io.github.youssefrashidy.function.math.Power
 import io.github.youssefrashidy.function.operators.Addition
 import io.github.youssefrashidy.function.operators.Division
 import io.github.youssefrashidy.function.operators.Multiplication
 import io.github.youssefrashidy.function.operators.Subtraction
+import io.github.youssefrashidy.function.structural.Permute
+import io.github.youssefrashidy.function.structural.Reshape
+import io.github.youssefrashidy.function.structural.Squeeze
+import io.github.youssefrashidy.function.structural.UnSqueeze
 import kotlin.math.max
 
 class Tensor internal constructor(
@@ -196,5 +204,16 @@ class Tensor internal constructor(
         this / MicroGrad.scalar(other.toDouble())
 
     operator fun unaryMinus(): Tensor = MicroGrad.scalar(-1.0) * this
+
+    infix fun matmul(other : Tensor) = MatMul(this, other)
+    infix fun pow (num : Double) = Power(this,num)
+    fun exp() = Exp(this)
+    fun log() = Log(this)
+    fun reshape(vararg shape: Int) = Reshape(this,shape)
+    fun perm(vararg perm : Int) = Permute(this,perm)
+    fun squeeze() = Squeeze(this)
+    fun unSqueeze() = UnSqueeze(this)
+
+
 
 }

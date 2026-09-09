@@ -15,10 +15,7 @@ object UnSqueeze: Function() {
             "Expected exactly 1 tensor, but got ${tensors.size}"
         }
         val inputTensor = tensors[0]
-        val shape = IntArray(inputTensor.shape.size+1)
-        for(i in 0 until inputTensor.shape.size)
-            shape[i] = inputTensor.shape[i]
-        shape[shape.size -1] = 1
+        val shape = intArrayOf(1,*inputTensor.shape)
         val outputTensor = Tensor(inputTensor.backedArray,shape,inputTensor.requiresGrad)
         if(MicroGrad.gradEnabled) {
             outputTensor.prevTensors = arrayOf(inputTensor)
