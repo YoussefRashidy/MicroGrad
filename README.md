@@ -404,24 +404,30 @@ The tests cover forward computation as well as gradient behavior for supported o
 
 ## Building
 
-MicroGrad is a Kotlin/JVM project and can be built using the standard Kotlin build ecosystem.
+MicroGrad is a Kotlin/JVM project and can be built using Maven.
 
-With Gradle:
+Build the project:
 
 ```bash
-./gradlew build
+mvn compile
 ```
 
 Run the test suite:
 
 ```bash
-./gradlew test
+mvn test
+```
+
+Package into a jar:
+
+```bash
+mvn package
 ```
 
 Run the example application:
 
 ```bash
-./gradlew run
+mvn exec:java -Dexec.mainClass="MainKt"
 ```
 
 ## Design Goals
